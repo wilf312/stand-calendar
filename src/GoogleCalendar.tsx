@@ -10,8 +10,8 @@ const initClient = () => {
   debugger
   // @ts-ignore 
   gapi.client.init({
-    apiKey: import.meta.env.VITE_CLIENT_ID || '', // Client ID and API key from the Developer Console
-    clientId: import.meta.env.VITE_API_KEY || '',
+    apiKey: import.meta.env.VITE_API_KEY || '', // Client ID and API key from the Developer Console
+    clientId: import.meta.env.VITE_CLIENT_ID || '',
     discoveryDocs: DISCOVERY_DOCS,
     scope: SCOPES
   }).then(function () {
