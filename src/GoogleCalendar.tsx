@@ -1,49 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import {List} from './List'
 
 const initClient = () => {
-  // Array of API discovery doc URLs for APIs used by the quickstart
-  const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest']
-  
-  // Authorization scopes required by the API multiple scopes can be
-  // included, separated by spaces.
-  const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-  // @ts-ignore 
-  gapi.client.init({
-    apiKey: import.meta.env.VITE_API_KEY || '', // Client ID and API key from the Developer Console
-    clientId: import.meta.env.VITE_CLIENT_ID || '',
-    discoveryDocs: DISCOVERY_DOCS,
-    scope: SCOPES
-  }).then(function () {
-    // Listen for sign-in state changes.
-    // @ts-ignore 
-    gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
-
-    // Handle the initial sign-in state.
-    // @ts-ignore 
-    updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())
-  }, function(error: any) {
-    appendPre(JSON.stringify(error, null, 2))
-  })
 }
 
-/**
- *  Called when the signed in status changes, to update the UI
- *  appropriately. After a sign-in, the API is called.
- */
-function updateSigninStatus(isSignedIn: boolean) {
-  if (isSignedIn) {
-    // @ts-ignore 
-    authorizeButton.style.display = 'none'
-    // @ts-ignore 
-    signoutButton.style.display = 'block'
-    listUpcomingEvents()
-  } else {
-    // @ts-ignore 
-    authorizeButton.style.display = 'block'
-    // @ts-ignore 
-    signoutButton.style.display = 'none'
-  }
-} 
 
 /**
  * Append a pre element to the body containing the given message
@@ -96,24 +56,71 @@ function listUpcomingEvents() {
 
 
 export const GoogleCalendar = () => {
+
+  const [isSignedIn, setSignedIn] = useState(false)
+
+  /**
+   *  Called when the signed in status changes, to update the UI
+   *  appropriately. After a sign-in, the API is called.
+   */
+  const updateSigninStatus = useCallback((isSignedIn: boolean) => {
+    console.log('updateSigninStatus', isSignedIn)
+    setSignedIn(isSignedIn)
+    if (isSignedIn) {
+      // listUpcomingEvents()
+    }
+  }, [])
+
   useEffect(() => {
     // @ts-ignore 
-    gapi.load('client:auth2', initClient)
+    gapi.load('client:auth2', () => {
+      const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest']
+      const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+
+      const a = {
+        apiKey: import.meta.env.VITE_API_KEY || '', // Client ID and API key from the Developer Console
+        clientId: import.meta.env.VITE_CLIENT_ID || '',
+        discoveryDocs: DISCOVERY_DOCS,
+        scope: SCOPES
+      }
+      // @ts-ignore 
+      gapi.client.init(a).then(function () {
+        debugger
+        // Listen for sign-in state changes.
+        // @ts-ignore 
+        gapi.auth2.getAuthInstance()?.isSignedIn?.listen(updateSigninStatus)
+        // Handle the initial sign-in state.
+        // @ts-ignore 
+        updateSigninStatus(gapi.auth2.getAuthInstance()?.isSignedIn?.get())
+      }, function(error: any) {
+        appendPre(JSON.stringify(error, null, 2))
+      })
+    })
   }, [])
 
   return <div>
+    <h1>{isSignedIn ? 'signed!' : 'not signed'} </h1>
 
     {/* <!--Add buttons to initiate auth sequence and sign out--> */}
-    <button onClick={() => {
-      // Sign in the user upon button click.
-      // @ts-ignore 
-      gapi.auth2.getAuthInstance().signIn()
-    }}>Authorize</button>
-    <button onClick={() => {
-      // Sign out the user upon button click.
-      // @ts-ignore 
-      gapi.auth2.getAuthInstance().signOut()
-    }}>Sign Out</button>
+    {!isSignedIn && 
+      <button onClick={() => {
+        // Sign in the user upon button click.
+        // @ts-ignore 
+        debugger
+        gapi.auth2.getAuthInstance().signIn()
+        // gapi.auth2.authorize()
+      }}>Authorize</button>
+    }
+    {isSignedIn && 
+    <>
+      <List />
+      <button onClick={() => {
+        // Sign out the user upon button click.
+        // @ts-ignore 
+        gapi.auth2.getAuthInstance().signOut()
+      }}>Sign Out</button>
+      </>
+    }
 
     <pre id="content" style={{
       whiteSpace: "pre-wrap"
