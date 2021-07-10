@@ -101,7 +101,7 @@ function listUpcomingEvents() {
     appendPre('Upcoming events:')
 
     if (events.length > 0) {
-      for (let i = 0 i < events.length i++) {
+      for (let i = 0; i < events.length; i++) {
         var event = events[i]
         var when = event.start.dateTime
         if (!when) {
