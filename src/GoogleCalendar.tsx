@@ -106,7 +106,6 @@ export const GoogleCalendar = () => {
       <button onClick={() => {
         // Sign in the user upon button click.
         // @ts-ignore 
-        debugger
         gapi.auth2.getAuthInstance().signIn()
         // gapi.auth2.authorize()
       }}>Authorize</button>
