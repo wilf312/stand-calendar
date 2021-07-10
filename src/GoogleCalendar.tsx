@@ -7,7 +7,7 @@ const initClient = () => {
   // Authorization scopes required by the API multiple scopes can be
   // included, separated by spaces.
   const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-  
+  debugger
   // @ts-ignore 
   gapi.client.init({
     apiKey: import.meta.env.CLIENT_ID || '', // Client ID and API key from the Developer Console
@@ -15,6 +15,7 @@ const initClient = () => {
     discoveryDocs: DISCOVERY_DOCS,
     scope: SCOPES
   }).then(function () {
+    debugger
     // Listen for sign-in state changes.
     // @ts-ignore 
     gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
