@@ -85,7 +85,6 @@ export const GoogleCalendar = () => {
       }
       // @ts-ignore 
       gapi.client.init(a).then(function () {
-        debugger
         // Listen for sign-in state changes.
         // @ts-ignore 
         gapi.auth2.getAuthInstance()?.isSignedIn?.listen(updateSigninStatus)
