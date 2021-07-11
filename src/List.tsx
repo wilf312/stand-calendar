@@ -98,4 +98,6 @@ const Page = styled.div `
   align-items: center;
   font-size: 14vw;
   background: #ffa5a5;
+
+  font-family: 'RocknRoll One', sans-serif;
 `
