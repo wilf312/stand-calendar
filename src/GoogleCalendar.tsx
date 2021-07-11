@@ -110,13 +110,13 @@ export const GoogleCalendar = () => {
       }}>Authorize</button>
     }
     {isSignedIn && 
-    <>
-      <List />
-      <button onClick={() => {
-        // Sign out the user upon button click.
-        // @ts-ignore 
-        gapi.auth2.getAuthInstance().signOut()
-      }}>Sign Out</button>
+      <>
+        <List />
+        <button onClick={() => {
+          // Sign out the user upon button click.
+          // @ts-ignore 
+          gapi.auth2.getAuthInstance().signOut()
+        }}>Sign Out</button>
       </>
     }
 

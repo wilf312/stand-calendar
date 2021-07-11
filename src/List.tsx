@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import {ControlArea} from './ControlArea'
 
 interface GoogleCalendarEvent {
   kind: string;
@@ -72,6 +73,7 @@ export const List = () => {
 
     {eventList[0] &&  <Page>
       {eventList[0].summary}
+      <ControlArea />
     </Page>}
 
 
